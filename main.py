@@ -1,72 +1,85 @@
-import sys
-from PyQt5 import QtGui, QtCore
-from PyQt5.Qt import Qt
+from PyQt5 import QtCore
 from PyQt5.QtCore import QRect
+from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QGroupBox, QPushButton
+import sys
+from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import *
+from PyQt5.Qt import Qt
 
 
-class Window(QMainWindow):
+class Window(QWidget):
     def __init__(self):
-        super(Window, self).__init__()
-
-        self.WIDTH = 75
-        self.HEIGHT = 225
-        self.resize(self.WIDTH, self.HEIGHT)
-
-        # Widget
-        self.centralwidget = QWidget(self)
-        self.centralwidget.resize(self.WIDTH, self.HEIGHT)
-
-        # Initial
-        self.setWindowFlag(Qt.FramelessWindowHint)
-        self.setAttribute(Qt.WA_TranslucentBackground)
-        self.setWindowOpacity(0.6)
-
+        super().__init__()
         radius = 30
-        self.centralwidget.setStyleSheet(
+        self.createLayout()
+        self.setGeometry(1200, 0, 200, 10)
+        self.vbox = QVBoxLayout()
+        self.vbox.addWidget(self.groupBox)
+        self.setLayout(self.vbox)
+        self.setStyleSheet(
             """
-            background:rgb(0,0,0);
-            border-top-left-radius:{0}px;
-            border-bottom-left-radius:{0}px;
-            border-top-right-radius:{0}px;
-            border-bottom-right-radius:{0}px;
+                background:rgb(0,0,0);
+                border-top-left-radius:{0}px;
+                border-bottom-left-radius:{0}px;
+                border-top-right-radius:{0}px;
+                border-bottom-right-radius:{0}px;   
             """.format(radius)
         )
-        self.ShowLayOut()
+        self.setWindowFlag(Qt.FramelessWindowHint)
+        self.setAttribute(Qt.WA_TranslucentBackground)
+        self.setWindowOpacity(0.9)
 
-    def ShowLayOut(self):
-        self.vbox = QVBoxLayout()
-        self.createLayOut()
-        self.leftWindow()
         self.show()
 
-    def createLayOut(self):
-        # camera
-        self.camera = QPushButton(self)
-        # left, top,width,height
-        self.camera.setGeometry(QRect(0, 30, 75, 80))
-        self.camera.setStyleSheet("background-color:black;")
-        self.camera.setIcon(QtGui.QIcon("icons/cam.png"))
-        self.camera.setIconSize(QtCore.QSize(65, 65))
-        self.camera.setMinimumHeight(50)
+    def createLayout(self):
+        self.groupBox = QGroupBox()
 
-        # image path
-        self.image = QPushButton(self)
-        self.image.setGeometry(QRect(0, 90, 75, 120))
-        self.image.setStyleSheet("background-color:black;")
-        self.image.setIcon(QtGui.QIcon("icons/folder.png"))
-        self.image.setIconSize(QtCore.QSize(85, 75))
-        self.image.setMinimumHeight(50)
+        hbox = QHBoxLayout()
+        edit = QLineEdit()
 
-    # move app to left of Window
-    def leftWindow(self):
-        qr = self.frameGeometry()
-        qr.moveRight(1850)
-        self.move(qr.bottomRight())
+        # button start
+        start = QPushButton()
+        start.setIcon(QIcon("icons/start.png"))
+        start.setGeometry(QRect(0, 25, 60, 0))
+        start.setStyleSheet("background-color:black;")
+        start.setIconSize(QtCore.QSize(60, 60))
+        edit.setFont(QFont("START", 15, QFont.Bold))
+        start.setMinimumHeight(50)
+        hbox.addWidget(start)
+
+        # button image path
+        folder = QPushButton()
+        folder.setIcon(QIcon("icons/folder.png"))
+        folder.setStyleSheet("background-color:black;")
+        folder.setGeometry(QRect(30, 25, 120, 0))
+        folder.setIconSize(QtCore.QSize(75, 75))
+        folder.setMinimumHeight(50)
+        hbox.addWidget(folder)
+
+        # button stop
+        stop = QPushButton()
+        stop.setIcon(QIcon("icons/stop.png"))
+        stop.setStyleSheet("background-color:black;")
+        stop.setGeometry(QRect(30, 25, 180, 0))
+        stop.setIconSize(QtCore.QSize(60, 60))
+        stop.setMinimumHeight(50)
+        hbox.addWidget(stop)
+
+        # button dropdown
+        dropdown = QPushButton()
+        dropdown.setIcon(QIcon("icons/dropdown.png"))
+        dropdown.setStyleSheet("background-color:black;")
+        dropdown.setGeometry(QRect(30, 25, 180, 0))
+        dropdown.setIconSize(QtCore.QSize(60, 60))
+        dropdown.setMinimumHeight(50)
+        hbox.addWidget(dropdown)
+
+        self.groupBox.setLayout(hbox)
+    # def select(self):
 
 
-if __name__ == '__main__':
-    app = QApplication([])
+if __name__ == "__main__":
+    myapp = QApplication(sys.argv)
     window = Window()
-    window.show()
-    sys.exit(app.exec_())
+    myapp.exec_()
+    sys.exit()
