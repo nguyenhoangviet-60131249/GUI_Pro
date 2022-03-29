@@ -2,17 +2,18 @@ from PyQt5 import QtCore
 from PyQt5.QtCore import QRect
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QGroupBox, QPushButton
 import sys
-from PyQt5.QtGui import QIcon, QFont
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import *
 from PyQt5.Qt import Qt
+import os
 
 
 class Window(QWidget):
     def __init__(self):
         super().__init__()
-        radius = 30
+        radius = 28
         self.createLayout()
-        self.setGeometry(1200, 0, 200, 10)
+        self.setGeometry(1200, 0, 250, 10)
         self.vbox = QVBoxLayout()
         self.vbox.addWidget(self.groupBox)
         self.setLayout(self.vbox)
@@ -27,7 +28,7 @@ class Window(QWidget):
         )
         self.setWindowFlag(Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground)
-        self.setWindowOpacity(0.9)
+        self.setWindowOpacity(0.8)
 
         self.show()
 
@@ -35,47 +36,54 @@ class Window(QWidget):
         self.groupBox = QGroupBox()
 
         hbox = QHBoxLayout()
-        edit = QLineEdit()
 
         # button start
         start = QPushButton()
         start.setIcon(QIcon("icons/start.png"))
-        start.setGeometry(QRect(0, 25, 60, 0))
+        start.setGeometry(QRect(0, 15, 20, 0))
         start.setStyleSheet("background-color:black;")
-        start.setIconSize(QtCore.QSize(60, 60))
-        edit.setFont(QFont("START", 15, QFont.Bold))
+        start.setIconSize(QtCore.QSize(63, 63))
         start.setMinimumHeight(50)
+        start.setMinimumWidth(60)
         hbox.addWidget(start)
 
         # button image path
         folder = QPushButton()
         folder.setIcon(QIcon("icons/folder.png"))
         folder.setStyleSheet("background-color:black;")
-        folder.setGeometry(QRect(30, 25, 120, 0))
-        folder.setIconSize(QtCore.QSize(75, 75))
+        folder.setGeometry(QRect(20, 15, 40, 0))
+        folder.setIconSize(QtCore.QSize(85, 85))
         folder.setMinimumHeight(50)
+        folder.setMinimumWidth(60)
+        folder.clicked.connect(self.openStorageImagePath)
         hbox.addWidget(folder)
 
         # button stop
         stop = QPushButton()
         stop.setIcon(QIcon("icons/stop.png"))
         stop.setStyleSheet("background-color:black;")
-        stop.setGeometry(QRect(30, 25, 180, 0))
+        stop.setGeometry(QRect(0, 15, 60, 0))
         stop.setIconSize(QtCore.QSize(60, 60))
         stop.setMinimumHeight(50)
+        stop.setMinimumWidth(60)
         hbox.addWidget(stop)
 
         # button dropdown
-        dropdown = QPushButton()
-        dropdown.setIcon(QIcon("icons/dropdown.png"))
-        dropdown.setStyleSheet("background-color:black;")
-        dropdown.setGeometry(QRect(30, 25, 180, 0))
-        dropdown.setIconSize(QtCore.QSize(60, 60))
-        dropdown.setMinimumHeight(50)
-        hbox.addWidget(dropdown)
+        setting = QPushButton()
+        setting.setIcon(QIcon("icons/setting.png"))
+        setting.setStyleSheet("background-color:black;")
+        setting.setGeometry(QRect(0, 15, 60, 0))
+        setting.setIconSize(QtCore.QSize(60, 60))
+        setting.setMinimumHeight(10)
+        setting.setMinimumWidth(50)
+        hbox.addWidget(setting)
 
         self.groupBox.setLayout(hbox)
-    # def select(self):
+
+    def openStorageImagePath(self):
+        path = "C:/Users/Public/Pictures"
+        path = os.path.realpath(path)
+        return os.startfile(path)
 
 
 if __name__ == "__main__":
